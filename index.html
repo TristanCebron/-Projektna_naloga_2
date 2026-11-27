@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam - Sign In Preview</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="glava">
+    <div id="zgornji" class="sirina">
+        <a id="logo" href="index.html"><img src="images/steam.png" alt="Steam logo"> STEAM</a>
+        <div id="meni">
+            <a class="aktiven" href="https://store.steampowered.com/">STORE</a>
+            <a href="https://steamcommunity.com/">COMMUNITY</a>
+            <a href="https://store.steampowered.com/about/">ABOUT</a>
+            <a href="https://help.steampowered.com/">SUPPORT</a>
+            <a href="logo.html">LOGO PROJECT</a>
+        </div>
+        <div id="racun">
+            <a id="namesti" href="https://store.steampowered.com/about/">Install Steam</a>
+            <a href="https://store.steampowered.com/login/">Official sign in</a>
+            <a href="https://store.steampowered.com/?l=english">English</a>
+        </div>
+    </div>
+
+    <div id="modri_meni">
+        <div id="vrstica" class="sirina">
+            <div id="kategorije">
+                <a href="https://store.steampowered.com/search/">Browse ▾</a>
+                <a href="https://store.steampowered.com/explore/">Recommendations ▾</a>
+                <a href="https://store.steampowered.com/search/">Categories ▾</a>
+                <a href="https://store.steampowered.com/steamdeck">Hardware ▾</a>
+                <a href="https://store.steampowered.com/remoteplay">Ways to Play ▾</a>
+                <a href="https://store.steampowered.com/search/?specials=1">Special Sections ▾</a>
+            </div>
+            <form id="iskanje" action="https://store.steampowered.com/search/">
+                <input type="text" name="term" placeholder="search the store" aria-label="Search the official Steam store">
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="ozadje">
+    <h1>Sign in</h1>
+    <div id="glavni">
+        <div id="prijava">
+            <label class="oznaka" for="ime">SIGN IN WITH ACCOUNT NAME</label>
+            <input id="ime" class="input" type="text" autocomplete="off">
+            <label class="oznaka" for="koda">PASSWORD</label>
+            <input id="koda" class="input" type="text" autocomplete="off">
+            <label id="zapomni">
+                <input type="checkbox" id="checkbox" checked>
+                Remember me
+            </label>
+            <button type="button" id="gumb_prijava" onclick="preveri()">Sign in</button>
+            <p id="obvestilo" aria-live="polite">Help, I can't sign in.</p>
+        </div>
+        <div id="qr">
+            <h2>PROJECT QR CODE</h2>
+            <img id="qr_slika" src="images/demo-qr.png" alt="Project QR code">
+            <p>QR code.<br>No account sign-in.</p>
+        </div>
+    </div>
+</div>
+
+<div id="spodnji" class="sirina">
+    <div id="ustvari">
+        <h3>New to Steam?</h3>
+        <a id="gumb_nov" href="https://store.steampowered.com/join/">Create an account</a>
+    </div>
+    <div id="opis">
+        <p>It's free and easy. Discover thousands of games to play with millions of new friends.</p>
+        <a href="logo.html">Open logo project</a>
+    </div>
+</div>
+
+
+<footer>
+    <div id="noga_zgoraj" class="sirina">
+        <div id="noga_logotipa">
+            <img src="images/steam.png" alt="Steam logo">
+            <div id="valve">VALVE</div>
+        </div>
+        <div id="copyright">
+            © 2026 moj testni projekt 👀
+        </div>
+    </div>
+
+    <div id="povezave" class="sirina">
+        <div>
+            <h4>STEAM</h4>
+            <a href="https://store.steampowered.com/about/">About Steam</a>
+            <a href="https://partner.steamgames.com/">Steamworks</a>
+            <a href="https://partner.steamgames.com/">Steam Distribution</a>
+            <a href="https://store.steampowered.com/digitalgiftcards/">Gift Cards</a>
+        </div>
+        <div>
+            <h4>VALVE</h4>
+            <a href="https://www.valvesoftware.com/">About Valve</a>
+            <a href="https://www.valvesoftware.com/en/jobs">Jobs</a>
+            <a href="https://store.steampowered.com/steamdeck">Hardware</a>
+            <a href="https://www.valvesoftware.com/">Recycling</a>
+        </div>
+        <div>
+            <h4>LEGAL</h4>
+            <a href="https://store.steampowered.com/privacy_agreement/">Privacy</a>
+            <a href="https://store.steampowered.com/privacy_agreement/">Cookies</a>
+            <a href="https://store.steampowered.com/steam_refunds/">Refunds</a>
+            <a href="https://store.steampowered.com/legal/">Notices & Policies</a>
+        </div>
+        <div>
+            <h4>MORE</h4>
+            <a href="https://store.steampowered.com/about/">Get Steam</a>
+            <a href="https://help.steampowered.com/">Get Support</a>
+            <a href="https://store.steampowered.com/mobile/">Mobile App</a>
+            <a href="logo.html">Logo Project</a>
+        </div>
+    </div>
+</footer>
+    <script src="script.js"></script>
+</body>
+</html>

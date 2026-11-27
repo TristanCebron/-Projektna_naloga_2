@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Logo Project</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        var step = 0;
+        var timer;
+
+        // M = moveTo, L = lineTo, C = bezierCurveTo, Z = closePath.
+        // Coordinates are taken from the supplied Steam SVG and rounded.
+        var background = [
+        ["M", 1.3, 41.2],
+        ["C", 5.26, 54.39, 17.49, 64, 31.96, 64],
+        ["C", 49.63, 64, 63.96, 49.67, 63.96, 32],
+        ["C", 63.96, 14.33, 49.63, 0, 31.96, 0],
+        ["C", 15, 0, 1.12, 13.19, 0.03, 29.87],
+        ["C", 2.1, 33.35, 2.91, 35.5, 1.3, 41.2],
+        ["L", 1.3, 41.2],
+        ["Z"]
+        ];
+        var symbol = [
+        ["M", 30.31, 23.98],
+        ["L", 30.31, 24.14],
+        ["L", 22.48, 35.52],
+        ["C", 21.21, 35.46, 19.94, 35.68, 18.73, 36.18],
+        ["C", 18.21, 36.39, 17.71, 36.66, 17.24, 36.98],
+        ["L", 0.04, 29.89],
+        ["C", 0.04, 29.89, -0.36, 36.44, 1.3, 41.32],
+        ["L", 13.46, 46.33],
+        ["C", 14.06, 49.06, 15.94, 51.45, 18.7, 52.6],
+        ["C", 23.22, 54.48, 28.42, 52.34, 30.3, 47.82],
+        ["C", 30.79, 46.66, 31.02, 45.42, 30.99, 44.16],
+        ["L", 42.18, 36.16],
+        ["L", 42.45, 36.16],
+        ["C", 49.16, 36.16, 54.61, 30.7, 54.61, 23.98],
+        ["C", 54.61, 17.27, 49.17, 11.82, 42.45, 11.81],
+        ["C", 35.75, 11.81, 30.3, 17.27, 30.3, 23.98],
+        ["L", 30.31, 23.98],
+        ["Z"],
+        ["M", 28.43, 47.03],
+        ["C", 26.98, 50.53, 22.96, 52.18, 19.48, 50.73],
+        ["C", 17.93, 50.08, 16.68, 48.88, 15.95, 47.37],
+        ["L", 19.91, 49.01],
+        ["C", 22.48, 50.08, 25.43, 48.86, 26.5, 46.29],
+        ["C", 27.57, 43.72, 26.36, 40.76, 23.79, 39.69],
+        ["L", 19.69, 37.99],
+        ["C", 21.26, 37.39, 23.06, 37.37, 24.74, 38.07],
+        ["C", 26.44, 38.77, 27.74, 40.1, 28.43, 41.79],
+        ["C", 29.13, 43.48, 29.12, 45.35, 28.42, 47.03],
+        ["Z"],
+        ["M", 42.47, 32.1],
+        ["C", 37.99, 32.09, 34.37, 28.46, 34.37, 23.99],
+        ["C", 34.37, 19.51, 37.99, 15.89, 42.47, 15.88],
+        ["C", 46.94, 15.89, 50.56, 19.51, 50.57, 23.99],
+        ["C", 50.56, 28.46, 46.94, 32.09, 42.47, 32.1],
+        ["Z"],
+        ["M", 36.4, 23.97],
+        ["C", 36.4, 20.61, 39.12, 17.88, 42.48, 17.88],
+        ["C", 45.83, 17.88, 48.56, 20.61, 48.56, 23.97],
+        ["C", 48.56, 27.34, 45.84, 30.06, 42.48, 30.07],
+        ["C", 39.12, 30.06, 36.4, 27.34, 36.4, 23.97],
+        ["L", 36.4, 23.97],
+        ["Z"]
+        ];
+
+        // Draw the first 'count' commands of a path.
+        function drawPath(path, count, color) {
+            context.beginPath();
+            for (var i = 0; i < count; i++) {
+                var a = path[i];
+                if (a[0] == "M") context.moveTo(a[1], a[2]);
+                if (a[0] == "L") context.lineTo(a[1], a[2]);
+                if (a[0] == "C") {
+                    context.bezierCurveTo(a[1], a[2], a[3], a[4], a[5], a[6]);
+                }
+                if (a[0] == "Z") context.closePath();
+            }
+            context.strokeStyle = color;
+            context.lineWidth = 0.35;
+            if (count == path.length) {
+                context.fillStyle = color;
+                context.fill("evenodd");
+            } else {
+                context.stroke();
+            }
+        }
+
+        function drawLogo() {
+            context.setTransform(1, 0, 0, 1, 0, 0);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.translate(202, 52);
+            context.scale(6, 6);
+            var gradient = context.createLinearGradient(0, 0, 0, 64);
+            gradient.addColorStop(0, "#111d2e");
+            gradient.addColorStop(0.4, "#0a1b48");
+            gradient.addColorStop(0.75, "#144b7e");
+            gradient.addColorStop(1, "#1387b8");
+
+            drawPath(background, Math.min(step, background.length), gradient);
+            if (step > background.length) {
+                drawPath(symbol, Math.min(step - background.length, symbol.length), "white");
+            }
+            step++;
+            if (step > background.length + symbol.length) clearInterval(timer);
+        }
+
+        function start() {
+            clearInterval(timer);
+            step = 0;
+            drawLogo();
+            timer = setInterval(drawLogo, 65);
+        }
+        document.getElementById("replay").onclick = start;
+        start();
+    };
+    </script>
+</head>
+<body>
+<div id="glava">
+    <div id="zgornji" class="sirina">
+        <a id="logo" href="index.html"><img src="images/steam.png" alt="Steam logo"> STEAM</a>
+        <div id="meni">
+            <a href="https://store.steampowered.com/">STORE</a>
+            <a href="https://steamcommunity.com/">COMMUNITY</a>
+            <a href="https://store.steampowered.com/about/">ABOUT</a>
+            <a href="https://help.steampowered.com/">SUPPORT</a>
+            <a class="aktiven" href="logo.html">LOGO PROJECT</a>
+        </div>
+        <div id="racun">
+            <a id="namesti" href="https://store.steampowered.com/about/">Install Steam</a>
+            <a href="https://store.steampowered.com/login/">Official sign in</a>
+            <a href="https://store.steampowered.com/?l=english">English</a>
+        </div>
+    </div>
+
+    <div id="modri_meni">
+        <div id="vrstica" class="sirina">
+            <div id="kategorije">
+                <a href="index.html">Sign In Practice</a>
+                <a href="logo.html">Logo Project</a>
+                <a href="#bezier">Bezier</a>
+                <a href="#svg">SVG</a>
+                <a href="#png">PNG</a>
+            </div>
+            <form id="iskanje" action="https://store.steampowered.com/search/">
+                <input type="text" name="term" placeholder="search the store" aria-label="Search the official Steam store">
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="logotipi">
+    <h1>Steam logo</h1>
+    <p id="podnaslov">HTML5 · Bézier curves · SVG · Original PNG</p>
+    <div id="prikazi">
+        <div class="kartica" id="bezier">
+            <h2>1. Bézier curves</h2>
+            <div class="slika"><canvas id="canvas" width="800" height="500">Canvas is not supported.</canvas></div>
+            <p>Drawn using JavaScript and <code>bezierCurveTo()</code>.</p>
+            <button id="replay">Draw again</button>
+        </div>
+        <div class="kartica" id="svg">
+            <h2>2. SVG</h2>
+            <div class="slika">
+                <svg viewBox="0 0 65 65" role="img" aria-label="Steam logo drawn with SVG paths">
+                    <defs>
+                        <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#111d2e" />
+                            <stop offset="21.2%" stop-color="#051839" />
+                            <stop offset="40.7%" stop-color="#0a1b48" />
+                            <stop offset="58.1%" stop-color="#132e62" />
+                            <stop offset="73.8%" stop-color="#144b7e" />
+                            <stop offset="87.3%" stop-color="#136497" />
+                            <stop offset="100%" stop-color="#1387b8" />
+                        </linearGradient>
+                    </defs>
+                    <g transform="translate(0.5 0.5)">
+                        <path fill="url(#blue)" d="M1.305 41.202C5.259 54.386 17.488 64 31.959 64c17.673 0 32-14.327 32-32s-14.327-32-32-32C15.001 0 1.124 13.193.028 29.874c2.074 3.477 2.879 5.628 1.275 11.328z" />
+                        <path fill="white" d="M30.31 23.985l.003.158-7.83 11.375c-1.268-.058-2.54.165-3.748.662a8.14 8.14 0 0 0-1.498.8L.042 29.893s-.398 6.546 1.26 11.424l12.156 5.016c.6 2.728 2.48 5.12 5.242 6.27a8.88 8.88 0 0 0 11.603-4.782 8.89 8.89 0 0 0 .684-3.656L42.18 36.16l.275.005c6.705 0 12.155-5.466 12.155-12.18s-5.44-12.16-12.155-12.174c-6.702 0-12.155 5.46-12.155 12.174zm-1.88 23.05c-1.454 3.5-5.466 5.147-8.953 3.694a6.84 6.84 0 0 1-3.524-3.362l3.957 1.64a5.04 5.04 0 0 0 6.591-2.719 5.05 5.05 0 0 0-2.715-6.601l-4.1-1.695c1.578-.6 3.372-.62 5.05.077 1.7.703 3 2.027 3.696 3.72s.692 3.56-.01 5.246M42.466 32.1a8.12 8.12 0 0 1-8.098-8.113 8.12 8.12 0 0 1 8.098-8.111 8.12 8.12 0 0 1 8.1 8.111 8.12 8.12 0 0 1-8.1 8.113m-6.068-8.126a6.09 6.09 0 0 1 6.08-6.095c3.355 0 6.084 2.73 6.084 6.095a6.09 6.09 0 0 1-6.084 6.093 6.09 6.09 0 0 1-6.081-6.093z" />
+                    </g>
+                </svg>
+            </div>
+            <p>Vector paths using the HTML5 SVG tag.</p>
+            <a class="gumb" href="images/steam.svg" target="_blank" rel="noopener">Open SVG file</a>
+        </div>
+        <div class="kartica" id="png">
+            <h2>3. Original PNG</h2>
+            <div class="slika"><img src="images/steam.png" alt="Original Steam logo converted to PNG"></div>
+            <p>Reference image converted from the supplied SVG.</p>
+            <a class="gumb" href="images/steam.png" target="_blank" rel="noopener">Open PNG file</a>
+        </div>
+    </div>
+    <div id="razlaga">
+        <h2>How it works</h2>
+        <p>A Bézier curve has a start point, two control points and an end point. The control points determine the shape of the curve. The Canvas version draws the paths step by step and fills them when complete.</p>
+        <p>In SVG, M moves the drawing point, C creates a cubic Bézier curve, L draws a straight line and Z closes the path.</p>
+    </div>
+</div>
+<footer>
+    <div id="noga_zgoraj" class="sirina">
+        <div id="noga_logotipa">
+            <img src="images/steam.png" alt="Steam logo">
+            <div id="valve">VALVE</div>
+        </div>
+        <div id="copyright">
+            Unofficial HTML5 interface preview. Steam and Valve are trademarks of Valve Corporation.<br>
+            VAT included in all prices where applicable.
+        </div>
+    </div>
+
+    <div id="povezave" class="sirina">
+        <div>
+            <h4>STEAM</h4>
+            <a href="https://store.steampowered.com/about/">About Steam</a>
+            <a href="https://partner.steamgames.com/">Steamworks</a>
+            <a href="https://partner.steamgames.com/">Steam Distribution</a>
+            <a href="https://store.steampowered.com/digitalgiftcards/">Gift Cards</a>
+        </div>
+        <div>
+            <h4>VALVE</h4>
+            <a href="https://www.valvesoftware.com/">About Valve</a>
+            <a href="https://www.valvesoftware.com/en/jobs">Jobs</a>
+            <a href="https://store.steampowered.com/steamdeck">Hardware</a>
+            <a href="https://www.valvesoftware.com/">Recycling</a>
+        </div>
+        <div>
+            <h4>LEGAL</h4>
+            <a href="https://store.steampowered.com/privacy_agreement/">Privacy</a>
+            <a href="https://store.steampowered.com/privacy_agreement/">Cookies</a>
+            <a href="https://store.steampowered.com/steam_refunds/">Refunds</a>
+            <a href="https://store.steampowered.com/legal/">Notices & Policies</a>
+        </div>
+        <div>
+            <h4>MORE</h4>
+            <a href="index.html">Sign In Practice</a>
+            <a href="#bezier">Bezier</a>
+            <a href="#svg">SVG</a>
+            <a href="#png">PNG</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
